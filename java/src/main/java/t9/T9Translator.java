@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 
+
 public class T9Translator {
 
     /**
@@ -32,7 +33,7 @@ public class T9Translator {
         StringBuilder pressSequence = new StringBuilder();
         StringBuilder messageBuilder = new StringBuilder();
         int byteRead;
-        char previousByteValue = 'a';
+        char previousByteValue = '\u0000';
 
         // Process the stream
         while ((byteRead = stream.read()) != -1) {
@@ -45,7 +46,7 @@ public class T9Translator {
             }
             // If we press a new key the current characters contained in the pressSequence are converted to the corresponding character and added to the StringBuilder containing the decoded message
             else if(((char) byteRead != previousByteValue)){
-                if(previousByteValue != 'a' && pressSequence.length() != 0){
+                if(previousByteValue != '\u0000' && pressSequence.length() != 0){
                     messageBuilder.append(conversionMap.get(pressSequence.toString()));
                     pressSequence.setLength(0);
                 }
