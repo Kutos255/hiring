@@ -29,7 +29,7 @@ public class T9Translator {
         // Initialization of the map that contains the conversions (from string to character) (example "444" -> "i")
         HashMap<String, Character> conversionMap = conversionMapInitialize();
 
-        // StringBuilder to build the current keypresses (chars) between "letters" and another one to build the message
+        // Initialization of one StringBuilder to build the current key presses sequence and another one to build the message
         StringBuilder pressSequence = new StringBuilder();
         StringBuilder messageBuilder = new StringBuilder();
         int byteRead;
@@ -37,14 +37,14 @@ public class T9Translator {
 
         // Process the stream
         while ((byteRead = stream.read()) != -1) {
-            // If we reach a "pause" the current characters contained in the pressSequence are converted to the corresponding character and added to the StringBuilder containing the decoded message
+            // If we reach a "pause" if there are characters contained in the pressSequence they are converted to the corresponding character, added to the StringBuilder containing the decoded message and the pressSequence is reset
             if ((char) byteRead == ' '){
                 if(pressSequence.length() != 0){
                     messageBuilder.append(conversionMap.get(pressSequence.toString()));
                     pressSequence.setLength(0);
                 }
             }
-            // If we press a new key the current characters contained in the pressSequence are converted to the corresponding character and added to the StringBuilder containing the decoded message
+            // If we press a new key the current characters contained in the pressSequence are converted to the corresponding character, added to the StringBuilder containing the decoded message and the pressSequence is reset
             else if(((char) byteRead != previousByteValue)){
                 if(previousByteValue != '\u0000' && pressSequence.length() != 0){
                     messageBuilder.append(conversionMap.get(pressSequence.toString()));
